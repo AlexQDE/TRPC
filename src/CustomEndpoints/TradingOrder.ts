@@ -32,9 +32,28 @@ export type TradingOrderGetPublicOrdersByOwnerResponse = {
 	totalSellQuantities: Record<string, number>;
 };
 
+export type TradingOrderGetTopOrdersPerItemCodeInput = {
+	itemCodes: string[];
+	/** Orders per side for each code; without it the server returns one per side. */
+	limit?: number;
+};
+
+/** The orders have the shape `getPublicOrdersByOwner` returns. */
+export type TradingOrderBook = {
+	buyOrders: PublicTradingOrder[];
+	sellOrders: PublicTradingOrder[];
+};
+
+/** Every requested code is a key; a code without orders, or an unknown one, has two empty lists. */
+export type TradingOrderGetTopOrdersPerItemCodeResponse = Record<string, TradingOrderBook>;
+
 export type TradingOrderCustomEndpoints = {
 	"tradingOrder.getPublicOrdersByOwner": {
 		input: TradingOrderGetPublicOrdersByOwnerInput;
 		output: TradingOrderGetPublicOrdersByOwnerResponse;
+	};
+	"tradingOrder.getTopOrdersPerItemCode": {
+		input: TradingOrderGetTopOrdersPerItemCodeInput;
+		output: TradingOrderGetTopOrdersPerItemCodeResponse;
 	};
 };

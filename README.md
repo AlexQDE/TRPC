@@ -71,6 +71,13 @@ main().catch((err) => {
   `data` is a discriminated union: narrow by `data.type` to access action fields
   such as `durationInHours`, `unMuteAt`, `removeDamages`, `oldUsername`,
   `newUsername`, and `message`.
+- `tradingOrder.getTopOrdersPerItemCode` returns one `{ buyOrders, sellOrders }`
+  book per requested code; a code without orders, or an unknown one, gets two
+  empty lists. `limit` counts orders per side; without it the server returns one.
+- `itemTrading.getItemTrading` answers 404 `NOT_FOUND` ("Itemtradings not found.")
+  for a code without a trading record, such as `toolbox`.
+- `gameStat.getPpMoneyValue` takes no input, and the server rejects `{}`. It is
+  in `VOID_INPUT_PROCEDURES`, so the client sends no input for it.
 
 ## Auto-Pagination
 

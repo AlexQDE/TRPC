@@ -12,3 +12,10 @@ integrationTest("gameStat.getWorldDevelopment", async () => {
 			assert(typeof value === "number", "expected numeric world development");
 			assert(value > 0, "expected positive world development");
 });
+
+integrationTest("gameStat.getPpMoneyValue", async () => {
+  const value = await client.gameStat.getPpMoneyValue();
+
+			assert(typeof value === "number", "expected numeric production point value");
+			assert(value > 0, "expected positive production point value");
+});
