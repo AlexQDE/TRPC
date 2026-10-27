@@ -8,4 +8,6 @@ export type GameStatCustomEndpoints = {
 		input: GameStatGetEquipmentAvgByCodeInput;
 		output: number;
 	};
+	/** Money value of one production point. */
+	"gameStat.getPpMoneyValue": { output: number };
 };

@@ -2,11 +2,14 @@ import assert from "node:assert/strict";
 import { test } from "node:test";
 import type {
   APIClient,
+  ItemTradingGetItemTradingResponse,
+  ItemTradingValue,
   PublicTradingOrder,
   Region,
   RegionActiveBattle,
   SanctionData,
   TournamentMatch,
+  TradingOrderBook,
   WorkStatsItem,
   InputFor,
   WorkerGetWorkersInput,
@@ -26,6 +29,10 @@ export function typeOnly(client: APIClient) {
   void client.election.getElection();
   // @ts-expect-error userId is required
   void client.user.getUserById();
+  // @ts-expect-error itemCode is required
+  void client.itemTrading.getItemTrading();
+  // @ts-expect-error itemCodes is required
+  void client.tradingOrder.getTopOrdersPerItemCode({ limit: 5 });
 
   // One-of inputs reject the empty filter and accept either side.
   // @ts-expect-error countryId or partyId is required
@@ -63,6 +70,7 @@ export function typeOnly(client: APIClient) {
   void client.donation.getManyPaginated({ limit: 1 });
   void client.donation.getTotalDonations({});
   void client.tradingOrder.getPublicOrdersByOwner({});
+  void client.tradingOrder.getTopOrdersPerItemCode({ itemCodes: ["scraps", "steel"] });
   void client.battleRanking.getRanking({ dataType: "damage", type: "user", side: "merged" });
   void client.upgrade.getUpgradeByTypeAndEntity({ upgradeType: "bunker" });
 
@@ -72,6 +80,8 @@ export function typeOnly(client: APIClient) {
 
   // No-input procedures stay callable without an argument.
   void client.gameStat.getWorldDevelopment();
+  void client.gameStat.getPpMoneyValue();
+  void client.gameConfig.getMaxBountyRate();
   void client.region.getAll();
   void client.shop.getLastGifts();
 
@@ -88,6 +98,8 @@ type _workerInput = Expect<Equal<InputFor<"worker.getWorkers">, WorkerGetWorkers
 type _activeBattle = Expect<Equal<Region["activeBattle"], RegionActiveBattle | undefined>>;
 type _population = Expect<Equal<Region["currentPopulation"], number>>;
 type _orderCountry = Expect<Equal<PublicTradingOrder["country"], string | undefined>>;
+type _bookOrder = Expect<Equal<TradingOrderBook["sellOrders"][number], PublicTradingOrder>>;
+type _tradingDay = Expect<Equal<ItemTradingGetItemTradingResponse["values"][number], ItemTradingValue>>;
 type _workWage = Expect<Equal<WorkStatsItem["wage"], number | undefined>>;
 type _wonBy = Expect<Equal<TournamentMatch["wonBy"], "attacker" | "defender" | undefined>>;
 
